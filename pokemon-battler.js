@@ -159,6 +159,20 @@ class Pokeball {
   }
 }
 
-module.exports = {Pokemon, Fire, Water, Grass, Normal, Charmander, Squirtle, Bulbasaur, Rattata, Pokeball}
+class Trainer {
+  constructor() {
+    this.belt = []
+  
+  }
+  catch(pokemon) {
+    if (this.belt.length < 6) {
+      const pokeball = new Pokeball()
+      pokeball.throw(pokemon)
+      this.belt.push(pokeball.storage)
+    }
+  }
+}
+
+module.exports = {Pokemon, Fire, Water, Grass, Normal, Charmander, Squirtle, Bulbasaur, Rattata, Pokeball, Trainer}
 
 

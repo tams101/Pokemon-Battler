@@ -9,6 +9,7 @@ const Squirtle = classes.Squirtle;
 const Bulbasaur = classes.Bulbasaur;
 const Rattata = classes.Rattata;
 const Pokeball = classes.Pokeball;
+const Trainer = classes.Trainer;
 
 describe('pokemonBattler', () => {
   test('Check that pokemon is an object', () => {
@@ -256,5 +257,30 @@ describe('pokemonBattler', () => {
     const pokeballTest = new Pokeball()
     const actualOutput = pokeballTest.contains()
     expect(actualOutput).toBe('empty...')
+  })
+  test('create a trainer class, with belt property that can hold up to 6 pokeballs', () => {
+    const trainerTest = new Trainer()
+    const actualOutput = trainerTest.belt.length
+    expect(actualOutput).toBe(0)
+  })
+  test('catch() - should catch a pokemon when there is room on the trainer\'s belt', () => {
+    const trainerTest = new Trainer()
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf')
+    trainerTest.catch(squirtle)
+    const actualOutput = trainerTest.belt.length
+    expect(actualOutput).toBe(1)
+  })
+  test('catch() - when belt is full do not catch additional pokemon', () => {
+    const trainerTest = new Trainer()
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf')
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    trainerTest.catch(squirtle)
+    const actualOutput = trainerTest.belt.length
+    expect(actualOutput).toBe(6)
   })
 })
