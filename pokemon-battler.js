@@ -170,6 +170,16 @@ class Trainer {
       pokeball.throw(pokemon)
       this.belt.push(pokeball.storage)
     }
+  console.log(`All your pokeballs have been used up!`)
+  }
+  getPokemon(pokemon) {
+    if (!this.belt.includes(pokemon.name)) {
+      const pokeball = new Pokeball()
+      pokeball.throw(pokemon)
+      this.belt.push(pokeball.storage)
+      console.log(this.belt)
+    } else {console.log('You have already caught this pokemon!')}
+    
   }
 }
 

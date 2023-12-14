@@ -282,5 +282,23 @@ describe('pokemonBattler', () => {
     trainerTest.catch(squirtle)
     const actualOutput = trainerTest.belt.length
     expect(actualOutput).toBe(6)
-  })
+  });
+  test('getPokemon() - searches for pokemon in the player\'s belt and if pokemon isn\'t in the belt then capture the pokemon', () => {
+    const trainerTest = new Trainer();
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    trainerTest.getPokemon(squirtle)
+    const actualOutput = trainerTest.belt.includes('Squirtle')
+
+    expect(actualOutput).toBe(true)
+  });
+  test('getPokemon() - searches for pokemon in the player\'s belt and if pokemon is in the belt then don\'t capture the pokemon', () => {
+    const trainerTest = new Trainer();
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    trainerTest.catch(squirtle)
+    const consoleSpy = jest.spyOn(console, 'log');
+    trainerTest.getPokemon(squirtle)
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalledWith('You have already caught this pokemon!')
+    consoleSpy.mockRestore();
+  });
 })
