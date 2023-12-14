@@ -4,6 +4,11 @@ const Fire = classes.Fire;
 const Water = classes.Water;
 const Grass = classes.Grass;
 const Normal = classes.Normal;
+const Charmander = classes.Charmander;
+const Squirtle = classes.Squirtle;
+const Bulbasaur = classes.Bulbasaur;
+const Rattata = classes.Rattata;
+const Pokeball = classes.Pokeball;
 
 describe('pokemonBattler', () => {
   test('Check that pokemon is an object', () => {
@@ -50,6 +55,7 @@ describe('pokemonBattler', () => {
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith('Eevee used Eevee\'s move')
+    consoleSpy.mockRestore();
   });
   test('Check that .hasFainted() returns false if a pokemon has more than 0 hitPoints', () => {
     const pokemonTest = new Pokemon('Eevee', 55, 18, 'headbutt')
@@ -167,5 +173,88 @@ describe('pokemonBattler', () => {
     expect(waterPokemon.isWeakTo(grassPokemon)).toBe(true)
     expect(grassPokemon.isWeakTo(firePokemon)).toBe(true)
     expect(normalPokemon.isWeakTo(firePokemon)).toBe(false)
+  })
+  test('create a new class by extending the fire class to create Charmander', () => {
+    const charmanderTest = new Charmander('Charmander', 44, 17, 'flamethrower')
+    const expectedOutput = {
+      name: 'Charmander',
+      hitPoints: 44,
+      attackDamage: 17,
+      move: 'Ember',
+      type: 'Fire'
+    }
+    expect(charmanderTest).toEqual(expectedOutput)
+  })
+  test('create a new class by extending the water class to create Squirtle', () => {
+    const squirtleTest = new Squirtle('Squirtle', 44, 16, 'Surf')
+    const expectedOutput = {
+      name: 'Squirtle',
+      hitPoints: 44,
+      attackDamage: 16,
+      move: 'Water gun',
+      type: 'Water'
+    }
+    expect(squirtleTest).toEqual(expectedOutput)
+  })
+  test('create two class by extending the grass and normal types to create Bulbasaur and Rattata', () => {
+    const bulbasaurTest = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    const bulbasaurExpectedOutput = {
+      name: 'Bulbasaur',
+      hitPoints: 45,
+      attackDamage: 16,
+      move: 'Vine whip',
+      type: 'Grass'
+    }
+    const rattataTest = new Rattata('Rattata', 40, 15, 'Bite')
+    const rattataExpectedOutput = {
+      name: 'Rattata',
+      hitPoints: 40,
+      attackDamage: 15,
+      type: 'Normal'
+    }
+    expect(bulbasaurTest).toEqual(bulbasaurExpectedOutput)
+    expect(rattataTest).toEqual(rattataExpectedOutput)
+  })
+  test('create Pokeball class with method of throw - if pokeball storage is empty, store given pokemon', () => {
+    const pokeballTest = new Pokeball()
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    pokeballTest.throw(bulbasaur)
+    const expectedOutput = 'Bulbasaur'
+    expect(pokeballTest.storage).toBe(expectedOutput)
+  })
+  test('throw() - if storage isn\'t empty, do not capture given pokemon', () => {
+    const pokeballTest = new Pokeball()
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    pokeballTest.throw(bulbasaur)
+    const charmander = new Charmander('Charmander', 44, 17, 'flamethrower')
+    const consoleSpy = jest.spyOn(console, 'log');
+    pokeballTest.throw(charmander)
+  expect(consoleSpy).toHaveBeenCalledTimes(1);
+  expect(consoleSpy).toHaveBeenCalledWith('Pokeball is occupied - the pokemon could not be captured')
+  consoleSpy.mockRestore();
+  })
+  test('isEmpty() - should return false if a pokemon is stored in the pokeball', () => {
+    const pokeballTest = new Pokeball()
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    pokeballTest.throw(bulbasaur)
+    const actualOutput = pokeballTest.isEmpty()
+    expect(actualOutput).toBe(false)
+  })
+  test('isEmpty() - should return true if no pokemon is stored in the pokeball', () => {
+    const pokeballTest = new Pokeball()
+    const actualOutput = pokeballTest.isEmpty()
+    expect(actualOutput).toBe(true)
+  })
+  test('contains() - should return stored pokemon\'s name when pokeball is occupied', () => {
+    const pokeballTest = new Pokeball()
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    pokeballTest.throw(bulbasaur)
+    const actualOutput = pokeballTest.contains()
+    expect(actualOutput).toBe('Bulbasaur')
+  })
+  test('contains() - should return "empty..." if pokeball is not occupied', () => {
+    const pokeballTest = new Pokeball()
+    const actualOutput = pokeballTest.contains()
+    expect(actualOutput).toBe('empty...')
   })
 })

@@ -105,4 +105,60 @@ class Normal extends Pokemon {
   }
 }
 
-module.exports = {Pokemon, Fire, Water, Grass, Normal}
+class Charmander extends Fire {
+  constructor(name, hitPoints, attackDamage, move) {
+    super(name, hitPoints, attackDamage, move)
+    this.move = "Ember"
+
+  }
+}
+
+class Squirtle extends Water {
+  constructor(name, hitPoints, attackDamage, move) {
+    super(name, hitPoints, attackDamage, move)
+    this.move = "Water gun"
+  }
+}
+
+class Bulbasaur extends Grass {
+  constructor(name, hitPoints, attackDamage, move) {
+    super(name, hitPoints, attackDamage, move)
+    this.move = "Vine whip"
+  }
+}
+
+class Rattata extends Normal {
+  constructor(name, hitPoints, attackDamage, move) {
+    super(name, hitPoints, attackDamage, move)
+    delete this.move
+  }
+}
+
+class Pokeball {
+  constructor() {
+    this.storage = ''
+  }
+  throw(pokemon) {
+    if (this.storage === '') {
+      this.storage = pokemon.name
+      console.log(`you caught ${this.storage}`)
+    }
+    console.log(`Pokeball is occupied - the pokemon could not be captured`)
+  }
+  isEmpty() {
+    if (this.storage === '') {
+      return true
+    }
+    return false
+  }
+  contains() {
+    if (this.storage === '') {
+      return 'empty...'
+    }
+    return this.storage
+  }
+}
+
+module.exports = {Pokemon, Fire, Water, Grass, Normal, Charmander, Squirtle, Bulbasaur, Rattata, Pokeball}
+
+
