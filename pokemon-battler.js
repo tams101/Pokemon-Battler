@@ -53,6 +53,28 @@ class Pokemon {
     }
     else {return false}
   }
+
+  isEffectiveAgainst(pokemon) {
+    if (this.type === 'Fire' && pokemon.type === 'Grass') {
+      return true
+    } else if (this.type === 'Grass' && pokemon.type === 'Water') {
+      return true
+    } else if (this.type === 'Water' && pokemon.type === 'Fire') {
+      return true
+    }
+    return false
+  }
+
+  isWeakTo(pokemon) {
+    if (this.type === 'Fire' && pokemon.type === 'Water') {
+      return true
+    } else if (this.type === 'Water' && pokemon.type === 'Grass') {
+      return true
+    } else if (this.type === 'Grass' && pokemon.type === 'Fire') {
+      return true
+    }
+    return false
+  }
 }
 
 class Fire extends Pokemon {

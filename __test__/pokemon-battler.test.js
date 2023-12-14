@@ -132,4 +132,40 @@ describe('pokemonBattler', () => {
 
   expect(pokemonTest).toEqual(expectedOutput);
   });
+  test('isEffectiveAgainst() - checks if a fire pokemon is effective against a grass pokemon', () => {
+    const firePokemon = new Fire('Charmander', 44, 17, 'flamethrower')
+    const grassPokemon = new Grass('Bulbasaur', 45, 16, 'Razor leaf')
+    const actualOutput = firePokemon.isEffectiveAgainst(grassPokemon)
+    const expectedOutput = true
+    expect(actualOutput).toBe(expectedOutput)
+  })
+  test('isEffectiveAgainst() - checks if a grass pokemon is effective against a water pokemon', () => {
+    const waterPokemon = new Water('Vaporeon', 70, 19, 'Hydro pump')
+    const grassPokemon = new Grass('Bulbasaur', 45, 16, 'Razor leaf')
+    const actualOutput = grassPokemon.isEffectiveAgainst(waterPokemon)
+    const expectedOutput = true
+    expect(actualOutput).toBe(expectedOutput)
+  })
+  test('isEffectiveAgainst() - when given a normal pokemon, return false as its not effective against a specific type', () => {
+    const waterPokemon = new Water('Vaporeon', 70, 19, 'Hydro pump')
+    const grassPokemon = new Grass('Bulbasaur', 45, 16, 'Razor leaf')
+    const normalPokemon = new Normal('Eevee', 55, 18, 'headbutt')
+    const firePokemon = new Fire('Charmander', 44, 17, 'flamethrower')
+    expect(waterPokemon.isEffectiveAgainst(firePokemon)).toBe(true)
+    expect(normalPokemon.isEffectiveAgainst(grassPokemon)).toBe(false)
+  })
+  test('isWeakTo() - checks if fire pokemon is weak against water pokemon', () => {
+    const firePokemon = new Fire('Charmander', 44, 17, 'flamethrower')
+    const waterPokemon = new Water('Vaporeon', 70, 19, 'Hydro pump')
+    expect(firePokemon.isWeakTo(waterPokemon)).toBe(true)
+  })
+  test('isWeakTo() - returns true when pokemon is weak against given pokemon, false if not', () => {
+    const waterPokemon = new Water('Vaporeon', 70, 19, 'Hydro pump')
+    const grassPokemon = new Grass('Bulbasaur', 45, 16, 'Razor leaf')
+    const normalPokemon = new Normal('Eevee', 55, 18, 'headbutt')
+    const firePokemon = new Fire('Charmander', 44, 17, 'flamethrower')
+    expect(waterPokemon.isWeakTo(grassPokemon)).toBe(true)
+    expect(grassPokemon.isWeakTo(firePokemon)).toBe(true)
+    expect(normalPokemon.isWeakTo(firePokemon)).toBe(false)
+  })
 })
