@@ -43,12 +43,12 @@ class Pokemon {
   }
 
   useMove() {
-    console.log(`${this.name} used ${this.name}'s move`)
+    console.log(`${this.name} used ${this.move}`)
     return this.attackDamage
   }
 
   hasFainted() {
-    if (this.hitPoints === 0) {
+    if (this.hitPoints <= 0) {
       return true
     }
     else {return false}
@@ -191,88 +191,67 @@ class Trainer {
   }}
 
   class Battle {
-    constructor(trainer1, trainer2) {
-      this.pokemon1 = trainer1.belt[0]
-      this.pokemon2 = trainer2.belt[0]
+    constructor(trainer1, trainer2, pokemon1, pokemon2) {
+      this.pokemon1 = trainer1.belt.find((pokemon) => pokemon.name === pokemon1)
+      this.pokemon2 = trainer2.belt.find((pokemon) => pokemon.name === pokemon2)
+  
 
     }
 
     fight() {
       this.attack()
-      // let pokemon1HP = this.pokemon1.hitPoints
-      // let pokemon2HP = this.pokemon2.hitPoints
-      // let pokemon1AttackDmg = this.pokemon1.attackDamage
-      // let pokemon2AttackDmg = this.pokemon2.attackDamage
-      // if (this.pokemon1.hasFainted()) {
-      //   return `${this.pokemon2.name} wins!`
-      // } else if (this.pokemon2.hasFainted()) {
-      //   return `${this.pokemon1.name} wins!`
-      // }
-      // //Pokemon 1 attacks Pokemon 2
-      // this.pokemon2.hitPoints = this.pokemon2.takeDamage(this.pokemon1.useMove())
-  
-      for(let i = 0; i < 20; i++) {
+
+      for(let i = 0; i < 10; i++) {
         //Pokemon 1 attacks Pokemon 2
+        if (!this.pokemon1.hasFainted() && !this.pokemon2.hasFainted()) {
         this.pokemon2.hitPoints = this.pokemon2.takeDamage(this.pokemon1.useMove())
-          console.log(this.pokemon2.hitsPoints)
+        console.log(`${this.pokemon2.name}: ${this.pokemon2.hitPoints}`)
+        }
+        if (this.pokemon1.isEffectiveAgainst(this.pokemon2)) {
+          console.log(`${this.pokemon1.move} is effective`)
+          } else {
+            console.log(`${this.pokemon1.move} is not effective`)
+          }
       
         //Check if Pokemon 2 has fainted
         if (this.pokemon2.hasFainted()) {
+          //console.log(`${this.pokemon1.name} wins!`)
           return `${this.pokemon1.name} wins!`
+          
         } 
-        //Pokemon 2 attacks Pokemon 1
-          this.pokemon1.hitPoints = this.pokemon1.takeDamage(this.pokemon2.useMove())
 
-          //Check if Pokemon 1 has fainted
+        //Pokemon 2 attacks Pokemon 1
+        if (!this.pokemon2.hasFainted() && !this.pokemon1.hasFainted()) {
+         this.pokemon1.hitPoints = this.pokemon1.takeDamage(this.pokemon2.useMove())
+         console.log(`${this.pokemon1.name}: ${this.pokemon1.hitPoints}`)
+        } //Check if Pokemon 1 has fainted
+        if (this.pokemon2.isEffectiveAgainst(this.pokemon1)) {
+          console.log(`${this.pokemon2.move} is effective`)
+          } else {
+            console.log(`${this.pokemon2.move} is not effective`)
+          }
         if (this.pokemon1.hasFainted()) {
           return `${this.pokemon2.name} wins!`
         } 
         }
-        
-          
-        }
-        
-
-      // console.log(`${this.pokemon1.name} attacked ${this.pokemon2.name} with ${this.pokemon1.move}, ${this.pokemon2.name}'s HP was reduced by ${this.pokemon1.attackDamage}. The opponent's HP is now ${this.pokemon2.hitPoints}`)
+      }
+    
     
     attack() {
      if (this.pokemon1.isEffectiveAgainst(this.pokemon2)) {
-      this.pokemon1.attackDamage * 1.25
+      this.pokemon1.attackDamage *= 1.25
      } else if (this.pokemon2.isEffectiveAgainst(this.pokemon1)) {
-      this.pokemon2.attackDamage * 1.25
+      this.pokemon2.attackDamage *= 1.25
      }
 
      if (this.pokemon1.isWeakTo(this.pokemon2)) {
-      this.pokemon1.attackDamage * 0.75
+      this.pokemon1.attackDamage *= 0.75
      } else if (this.pokemon2.isWeakTo(this.pokemon1)) {
-      this.pokemon2.attackDamage * 0.75
+      this.pokemon2.attackDamage *= 0.75
      }
     }
+  }
 
-    /*
-    pokemon1Turn() {
-      
-      for (let i = this.pokemon1.hitPoints; i > 0; i--) {
-        //Pokemon 1 attacks Pokemon 2
-        this.pokemon2.hitPoints = this.pokemon2.takeDamage(this.pokemon1.useMove())
-      }
-      //Check if Pokemon 2 has fainted
-      if (this.pokemon2.hasFainted()) {
-        return `${this.pokemon1.name} wins!`
-      }
-    }
-
-    pokemon2Turn() {
-      for (let i = this.pokemon2.hitPoints; i > 0; i--) {
-        //Pokemon 2 attacks Pokemon 1
-        this.pokemon1.hitPoints = this.pokemon1.takeDamage(this.pokemon2.useMove())
-      }
-      //Check if Pokemon 1 has fainted
-      if (this.pokemon1.hasFainted()) {
-        return `${this.pokemon2.name} wins!`
-      }
-     
-    } */}
   
 module.exports = {Pokemon, Fire, Water, Grass, Normal, Charmander, Squirtle, Bulbasaur, Rattata, Pokeball, Trainer, Battle}
 

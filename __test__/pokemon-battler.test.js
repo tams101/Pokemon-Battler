@@ -56,7 +56,7 @@ describe('pokemonBattler', () => {
     pokemonTest.useMove();
 
     expect(consoleSpy).toHaveBeenCalledTimes(1);
-    expect(consoleSpy).toHaveBeenCalledWith('Eevee used Eevee\'s move')
+    expect(consoleSpy).toHaveBeenCalledWith('Eevee used headbutt')
     consoleSpy.mockRestore();
   });
   test('Check that .hasFainted() returns false if a pokemon has more than 0 hitPoints', () => {
@@ -315,7 +315,7 @@ describe('pokemonBattler', () => {
     }
     expect(trainerTest.getPokemon(squirtle)).toEqual(expectedOutput)
   });
-  test('Battle(', () => {
+  test('Battle() - battle returns a string of the name of the winning pokemon, when each trainer has only one pokemon', () => {
     const trainer1 = new Trainer();
     const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
     trainer1.catch(squirtle);
@@ -324,12 +324,30 @@ describe('pokemonBattler', () => {
     const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
     trainer2.catch(bulbasaur);
 
-    const battle = new Battle(trainer1, trainer2);
+    const battle = new Battle(trainer1, trainer2, 'Squirtle', 'Bulbasaur');
     battle.fight()
     //Squirtle attacks Bulbasaur
     //Check Bulbasaur's reduced HP
-    const expectedOutput = 29;
-    const actualOutput =  trainer2.belt[0].hitPoints
+    const expectedOutput = 'Bulbasaur wins!';
+    const actualOutput =  battle.fight()
+    expect(actualOutput).toBe(expectedOutput)
+  })
+  test('Battle() - should access specified pokemon in the belt when there are more than one pokemon in each belt, and battle those pokemon', () => {
+    const trainer1 = new Trainer();
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    const charmander = new Charmander('Charmander', 44, 17, 'Flamethrower')
+    trainer1.catch(squirtle);
+    trainer1.catch(charmander);
+
+    const trainer2 = new Trainer();
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    const squirtle2 = new Squirtle('Squirtle', 44, 16, 'Surf')
+    trainer2.catch(bulbasaur);
+    trainer2.catch(squirtle2)
+
+    const battle = new Battle(trainer1, trainer2, 'Charmander', 'Squirtle')
+    const expectedOutput = 'Squirtle wins!'
+    const actualOutput = battle.fight()
     expect(actualOutput).toBe(expectedOutput)
   })
 })
