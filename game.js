@@ -26,6 +26,12 @@ const firstQuestions = [
       message: 'Which pokemon do you choose?',
       choices: ['Squirtle', 'Bulbasaur'],
     },
+    {
+      type: 'list',
+      name: 'choices',
+      message: 'What will you do?',
+      choices: ['Fight', 'Run Away'],
+  }
     // etc...
   ];
   
@@ -41,18 +47,16 @@ const firstQuestions = [
         name: 'pokemon',
         message: 'Which pokemon do you choose?',
         choices: ['Charmander', 'Bulbasaur'],
-      }
-    //... see examples to how to format questions
-  ];
-
-  const thirdQuestions = [
-    {
+      },
+      {
         type: 'list',
         name: 'choices',
         message: 'What will you do?',
         choices: ['Fight', 'Run Away'],
     }
-  ]
+    //... see examples to how to format questions
+  ];
+
   
   function playGame() {
     inquirer
@@ -71,14 +75,14 @@ const firstQuestions = [
         console.log(trainer2)
         // do stuff with the answers to the secondQuestions, e.g. choose moves to use / fight / run away / select pokemon to fight with
         console.log(secondAnswers);
-        return inquirer.prompt(thirdQuestions)
-      })
+        return inquirer.prompt(thirdQuestions);
+        })
       .then(function (thirdAnswers) {
-        if (thirdAnswers === 'Fight') {
-            const battle = new Battle(firstAnswers.name, secondAnswers.name, firstAnswers.pokemon, secondAnswers.pokemon)
-            console.log(battle.fight())
-        }
-      })
+        if(secondAnswers.choices === 'Fight') {
+          const battle = new Battle(firstAnswers.name, secondAnswers.name, firstAnswers.pokemon, secondAnswers.pokemon)
+            
+        console.log(battle.fight())
+      }})
   }
   
   playGame();
