@@ -10,6 +10,7 @@ const Bulbasaur = classes.Bulbasaur;
 const Rattata = classes.Rattata;
 const Pokeball = classes.Pokeball;
 const Trainer = classes.Trainer;
+const Battle = classes.Battle;
 
 describe('pokemonBattler', () => {
   test('Check that pokemon is an object', () => {
@@ -221,7 +222,7 @@ describe('pokemonBattler', () => {
     const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
     pokeballTest.throw(bulbasaur)
     const expectedOutput = 'Bulbasaur'
-    expect(pokeballTest.storage).toBe(expectedOutput)
+    expect(pokeballTest.storage.name).toBe(expectedOutput)
   })
   test('throw() - if storage isn\'t empty, do not capture given pokemon', () => {
     const pokeballTest = new Pokeball()
@@ -230,9 +231,9 @@ describe('pokemonBattler', () => {
     const charmander = new Charmander('Charmander', 44, 17, 'flamethrower')
     const consoleSpy = jest.spyOn(console, 'log');
     pokeballTest.throw(charmander)
-  expect(consoleSpy).toHaveBeenCalledTimes(1);
-  expect(consoleSpy).toHaveBeenCalledWith('Pokeball is occupied - the pokemon could not be captured')
-  consoleSpy.mockRestore();
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalledWith('Pokeball is occupied - the pokemon could not be captured')
+    consoleSpy.mockRestore();
   })
   test('isEmpty() - should return false if a pokemon is stored in the pokeball', () => {
     const pokeballTest = new Pokeball()
@@ -287,7 +288,7 @@ describe('pokemonBattler', () => {
     const trainerTest = new Trainer();
     const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
     trainerTest.getPokemon(squirtle)
-    const actualOutput = trainerTest.belt.includes('Squirtle')
+    const actualOutput = trainerTest.belt.includes(squirtle)
 
     expect(actualOutput).toBe(true)
   });
@@ -301,4 +302,34 @@ describe('pokemonBattler', () => {
     expect(consoleSpy).toHaveBeenCalledWith('You have already caught this pokemon!')
     consoleSpy.mockRestore();
   });
+  test('getPokemon() - if the pokemon is already in the player\'s belt then return that pokemon', () => {
+    const trainerTest = new Trainer();
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    trainerTest.catch(squirtle)
+    const expectedOutput = {
+      name: 'Squirtle',
+      hitPoints: 44,
+      attackDamage: 16,
+      move: 'Water gun',
+      type: 'Water'
+    }
+    expect(trainerTest.getPokemon(squirtle)).toEqual(expectedOutput)
+  });
+  test('Battle(', () => {
+    const trainer1 = new Trainer();
+    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    trainer1.catch(squirtle);
+
+    const trainer2 = new Trainer();
+    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    trainer2.catch(bulbasaur);
+
+    const battle = new Battle(trainer1, trainer2);
+    battle.fight()
+    //Squirtle attacks Bulbasaur
+    //Check Bulbasaur's reduced HP
+    const expectedOutput = 29;
+    const actualOutput =  trainer2.belt[0].hitPoints
+    expect(actualOutput).toBe(expectedOutput)
+  })
 })
