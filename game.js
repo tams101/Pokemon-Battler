@@ -1,88 +1,116 @@
-const inquirer = require('inquirer');
-const classes = require('./pokemon-battler')
-const Pokemon = classes.Pokemon;
-const Fire = classes.Fire;
-const Water = classes.Water;
-const Grass = classes.Grass;
-const Normal = classes.Normal;
-const Charmander = classes.Charmander;
-const Squirtle = classes.Squirtle;
-const Bulbasaur = classes.Bulbasaur;
-const Rattata = classes.Rattata;
-const Pokeball = classes.Pokeball;
-const Trainer = classes.Trainer;
-const Battle = classes.Battle;
+const inquirer = require("inquirer");
+const {
+  Trainer,
+  Battle,
+  Charmander,
+  Squirtle,
+  Bulbasaur,
+} = require("./pokemon-battler");
+
+console.log("WELCOME TO POKEMON BATTLER!");
 
 const firstQuestions = [
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is your name?',
-      default: 'Ash',
-    },
-    {
-      type: 'list',
-      name: 'pokemon',
-      message: 'Which pokemon do you choose?',
-      choices: ['Squirtle', 'Bulbasaur'],
-    },
-    {
-      type: 'list',
-      name: 'choices',
-      message: 'What will you do?',
-      choices: ['Fight', 'Run Away'],
-  }
-    // etc...
-  ];
-  
-  const secondQuestions = [
-    {
-        type: 'input',
-        name: 'name',
-        message: 'What is your name?',
-        default: 'Ash',
-      },
-      {
-        type: 'list',
-        name: 'pokemon',
-        message: 'Which pokemon do you choose?',
-        choices: ['Charmander', 'Bulbasaur'],
-      },
-      {
-        type: 'list',
-        name: 'choices',
-        message: 'What will you do?',
-        choices: ['Fight', 'Run Away'],
-    }
-    //... see examples to how to format questions
-  ];
+  {
+    type: "input",
+    name: "name",
+    message: "Hi there, what is your name?",
+    default: "Ash",
+  },
+  {
+    type: "list",
+    name: "pokemon",
+    message: "Choose your pokemon!",
+    choices: ["Charmander", "Squirtle", "Bulbasaur"],
+  },
+  {
+    type: "input",
+    name: "pokemonName",
+    message: "Give your pokemon a name",
+    default: "Player's Pokemon"
+  },
+  {
+    type: "input",
+    name: "opponentsName",
+    message: "Your opponent has arrived, what is their name?",
+    default: "Gary",
+  },
+  {
+    type: "list",
+    name: "opponentsPokemon",
+    message: "Which pokemon does your opponent choose?",
+    choices: ["Charmander", "Squirtle", "Bulbasaur"],
+  },
+  {
+    type: "input",
+    name: "oppPokemonName",
+    message: "What is your opponent's pokemon name?",
+    default: "Opponent's Pokemon"
+  },
+];
 
-  
-  function playGame() {
-    inquirer
-      .prompt(firstQuestions)
-      .then(function (firstAnswers) {
-        const trainer1 = new Trainer(firstAnswers.name)
-        trainer1.catch(firstAnswers.pokemon)
-        console.log(trainer1)
-        // do stuff with the answers to the firstQuestions, e.g. create trainers and catch pokemon
-        console.log(firstAnswers);
-        return inquirer.prompt(secondQuestions);
-      })
-      .then(function (secondAnswers) {
-        const trainer2 = new Trainer(secondAnswers.name)
-        trainer2.catch(secondAnswers.pokemon)
-        console.log(trainer2)
-        // do stuff with the answers to the secondQuestions, e.g. choose moves to use / fight / run away / select pokemon to fight with
-        console.log(secondAnswers);
-        return inquirer.prompt(thirdQuestions);
-        })
-      .then(function (thirdAnswers) {
-        if(secondAnswers.choices === 'Fight') {
-          const battle = new Battle(firstAnswers.name, secondAnswers.name, firstAnswers.pokemon, secondAnswers.pokemon)
-            
-        console.log(battle.fight())
-      }})
-  }
-  
-  playGame();
+const secondQuestions = [
+  {
+    type: "list",
+    name: "choices",
+    message: "What will you do?",
+    choices: ["Fight", "Run Away"],
+  },
+];
+
+function playGame() {
+  let player;
+  let opponent;
+  let playerPokemon;
+  let opponentsPokemon;
+
+  inquirer
+    .prompt(firstQuestions)
+    .then(function (firstAnswers) {
+      //Create player trainer object
+      player = new Trainer(firstAnswers.name);
+      
+      //Creater player pokemon
+      if (firstAnswers.pokemon === "Charmander") {
+        playerPokemon = new Charmander(firstAnswers.pokemonName);
+      } else if (firstAnswers.pokemon === "Squirtle") {
+        playerPokemon = new Squirtle(firstAnswers.pokemonName);
+      } else if (firstAnswers.pokemon === "Bulbasaur") {
+        playerPokemon = new Bulbasaur(firstAnswers.pokemonName);
+      }
+
+      //Add pokemon to player's belt
+      player.catch(playerPokemon);
+
+      //create opponent trainer object
+      opponent = new Trainer(firstAnswers.opponentName);
+
+      //Create opponent pokemon
+      if (firstAnswers.opponentsPokemon === "Charmander") {
+        opponentsPokemon = new Charmander(firstAnswers.oppPokemonName);
+      } else if (firstAnswers.opponentsPokemon === "Squirtle") {
+        opponentsPokemon = new Squirtle(firstAnswers.oppPokemonName);
+      } else if (firstAnswers.opponentsPokemon === "Bulbasaur") {
+        opponentsPokemon = new Bulbasaur(firstAnswers.oppPokemonName);
+      }
+
+      //Add pokemon to opponent's belt
+      opponent.catch(opponentsPokemon);
+
+      return inquirer.prompt(secondQuestions);
+    })
+    .then(function (secondAnswers) {
+      if (secondAnswers.choices === "Fight") {
+        const battle = new Battle(
+          player,
+          opponent,
+          playerPokemon.name,
+          opponentsPokemon.name
+        );
+        console.log(battle.fight());
+      } else {
+        console.log("You ran away!");
+      }
+    });
+}
+
+playGame();

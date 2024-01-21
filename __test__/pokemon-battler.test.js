@@ -177,7 +177,7 @@ describe('pokemonBattler', () => {
     expect(normalPokemon.isWeakTo(firePokemon)).toBe(false)
   })
   test('create a new class by extending the fire class to create Charmander', () => {
-    const charmanderTest = new Charmander('Charmander', 44, 17, 'flamethrower')
+    const charmanderTest = new Charmander('Charmander')
     const expectedOutput = {
       name: 'Charmander',
       hitPoints: 44,
@@ -188,7 +188,7 @@ describe('pokemonBattler', () => {
     expect(charmanderTest).toEqual(expectedOutput)
   })
   test('create a new class by extending the water class to create Squirtle', () => {
-    const squirtleTest = new Squirtle('Squirtle', 44, 16, 'Surf')
+    const squirtleTest = new Squirtle('Squirtle')
     const expectedOutput = {
       name: 'Squirtle',
       hitPoints: 44,
@@ -199,7 +199,7 @@ describe('pokemonBattler', () => {
     expect(squirtleTest).toEqual(expectedOutput)
   })
   test('create two class by extending the grass and normal types to create Bulbasaur and Rattata', () => {
-    const bulbasaurTest = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    const bulbasaurTest = new Bulbasaur('Bulbasaur')
     const bulbasaurExpectedOutput = {
       name: 'Bulbasaur',
       hitPoints: 45,
@@ -207,11 +207,12 @@ describe('pokemonBattler', () => {
       move: 'Vine whip',
       type: 'Grass'
     }
-    const rattataTest = new Rattata('Rattata', 40, 15, 'Bite')
+    const rattataTest = new Rattata('Rattata')
     const rattataExpectedOutput = {
       name: 'Rattata',
       hitPoints: 40,
       attackDamage: 15,
+      move: 'Bite',
       type: 'Normal'
     }
     expect(bulbasaurTest).toEqual(bulbasaurExpectedOutput)
@@ -315,13 +316,13 @@ describe('pokemonBattler', () => {
     }
     expect(trainerTest.getPokemon(squirtle)).toEqual(expectedOutput)
   });
-  test('Battle() - battle returns a string of the name of the winning pokemon, when each trainer has only one pokemon', () => {
+  test('Battle() - battle returns the name of the winning pokemon, where each trainer has only one pokemon', () => {
     const trainer1 = new Trainer();
-    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
+    const squirtle = new Squirtle('Squirtle');
     trainer1.catch(squirtle);
 
     const trainer2 = new Trainer();
-    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
+    const bulbasaur = new Bulbasaur('Bulbasaur')
     trainer2.catch(bulbasaur);
 
     const battle = new Battle(trainer1, trainer2, 'Squirtle', 'Bulbasaur');
@@ -334,14 +335,14 @@ describe('pokemonBattler', () => {
   })
   test('Battle() - should access specified pokemon in the belt when there are more than one pokemon in each belt, and battle those pokemon', () => {
     const trainer1 = new Trainer();
-    const squirtle = new Squirtle('Squirtle', 44, 16, 'Surf');
-    const charmander = new Charmander('Charmander', 44, 17, 'Flamethrower')
+    const squirtle = new Squirtle('Squirtle');
+    const charmander = new Charmander('Charmander')
     trainer1.catch(squirtle);
     trainer1.catch(charmander);
 
     const trainer2 = new Trainer();
-    const bulbasaur = new Bulbasaur('Bulbasaur', 45, 16, 'Razor leaf')
-    const squirtle2 = new Squirtle('Squirtle', 44, 16, 'Surf')
+    const bulbasaur = new Bulbasaur('Bulbasaur')
+    const squirtle2 = new Squirtle('Squirtle')
     trainer2.catch(bulbasaur);
     trainer2.catch(squirtle2)
 
